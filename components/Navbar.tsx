@@ -7,11 +7,11 @@ import Image from 'next/image'
 
 const navItems = [
   { name: 'Gradient Week', href: '/events' },
-  { name: 'Core Team', href: 'https://gradientaiml.tech/team' },
-  { name: 'Event Gallery', href: 'https://gradientaiml.tech/gallery' },
-  { name: 'Dept. of ML', href: 'https://gradientaiml.techdepartment-work' },
-  { name: 'Let\'s Connect', href: 'https://gradientaiml.tech/connect' },
-  { name: 'About', href: 'https://gradientaiml.tech/about' }
+  { name: 'Core Team', href: '/team' },
+  { name: 'Event Gallery', href: '/gallery' },
+  { name: 'Dept. of ML', href: '/department-work' },
+  { name: 'Let\'s Connect', href: '/connect' },
+  { name: 'About', href: '/about' }
 ]
 
 export default function Navbar() {
