@@ -8,14 +8,7 @@ import { ChevronLeft, ChevronRight, X, MousePointerClick } from 'lucide-react';
 import { recapSections } from './recap-data';
 
 export default function GradientWeekRecap() {
-  const [activeSection, setActiveSection] = useState<{
-    id: string;
-    title: string;
-    brief: string;
-    description: string;
-    coverImage: string;
-    images: { url: string; alt: string; thumbnail?: string }[];
-  } | null>(null);
+  const [activeSection, setActiveSection] = useState(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -30,14 +23,7 @@ export default function GradientWeekRecap() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const openSection = (section: {
-    id: string;
-    title: string;
-    brief: string;
-    description: string;
-    coverImage: string;
-    images: { url: string; alt: string; thumbnail?: string }[];
-  }) => {
+  const openSection = (section) => {
     setActiveSection(section);
     setCurrentImageIndex(0);
   };
@@ -60,7 +46,7 @@ export default function GradientWeekRecap() {
     }
   };
 
-  const goToImage = (index: number) => {
+  const goToImage = (index) => {
     setCurrentImageIndex(index);
   };
   
@@ -104,171 +90,172 @@ export default function GradientWeekRecap() {
 
         {/* Grid Layout for Timeline */}
         <div className="relative">
-          {!isMobile && reorganizedSections.map((row, rowIndex) => (
-            <div key={`row-${rowIndex}`} className="relative mb-24">
-              {/* Horizontal line connecting the row */}
-              <motion.div
-                className="absolute left-0 right-0 top-1/2 h-2 bg-gradient-to-r from-purple-500 via-blue-500 to-purple-500 transform -translate-y-1/2 z-0 hidden md:block"
-                initial={{ scaleX: 0, opacity: 0 }}
-                style={{ left: '20%', right: '20%' }}
-                whileInView={{ scaleX: 1, opacity: 1 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 1, delay: 0.2 }}
-              ></motion.div>
+          {/* Desktop Layout */}
+          <div className={`${isMobile ? 'hidden' : 'block'}`}>
+            {reorganizedSections.map((row, rowIndex) => (
+              <div key={`row-${rowIndex}`} className="relative mb-24">
+                {/* Horizontal line connecting the row */}
+                <motion.div
+                  className="absolute left-1/5 right-1/5 top-1/2 h-2 bg-gradient-to-r from-purple-500 via-blue-500 to-purple-500 transform -translate-y-1/2 z-0"
+                  initial={{ scaleX: 0, opacity: 0 }}
+                  style={{ left: '20%', right: '20%' }}
+                  whileInView={{ scaleX: 1, opacity: 1 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 1, delay: 0.2 }}
+                ></motion.div>
 
-              {/* Section cards in this row */}
-              <div className={`grid grid-cols-1 md:grid-cols-${row.length === 2 ? '2' : '3'} gap-12 relative z-10`}>
-                {row.map((section, colIndex) => {
-                  if (!section) return null; // Skip if section is undefined
+                {/* Section cards in this row */}
+                <div className={`grid grid-cols-${row.length === 2 ? '2' : '3'} gap-12 relative z-10`}>
+                  {row.map((section, colIndex) => {
+                    if (!section) return null; // Skip if section is undefined
 
-                  // Calculate tilt angle based on position in grid
-                  const tiltDirection = (rowIndex + colIndex) % 2 === 0 ? 1 : -1;
-                  const tiltAngle = `${tiltDirection * 3}deg`;
+                    // Calculate tilt angle based on position in grid
+                    const tiltDirection = (rowIndex + colIndex) % 2 === 0 ? 1 : -1;
+                    const tiltAngle = `${tiltDirection * 3}deg`;
 
-                  return (
-                    <motion.div
-                      key={section.id}
-                      className="relative"
-                      initial={{ opacity: 0, y: 50 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true, margin: "-100px" }}
-                      transition={{ duration: 0.6, delay: colIndex * 0.1 }}
-                    >
-                      {/* Section card */}
+                    return (
                       <motion.div
-                        className="bg-gray-900/80 backdrop-blur-md border border-purple-700/50 rounded-xl overflow-hidden cursor-pointer hover:border-purple-500 transition-all duration-300 shadow-lg shadow-purple-900/20 relative z-10 h-full"
-                        style={{ transform: `rotate(${tiltAngle})` }}
-                        whileHover={{ scale: 1.05, rotate: '0deg' }}
-                        onClick={() => openSection(section)}
+                        key={section.id}
+                        className="relative"
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true, margin: "-100px" }}
+                        transition={{ duration: 0.6, delay: colIndex * 0.1 }}
                       >
-                        <div className="relative h-full flex flex-col">
-                          <img
-                            src={section.coverImage}
-                            alt={section.title}
-                            className="w-full aspect-[4/3] object-cover"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex items-end">
-                            <div className="p-6">
-                              <h3 className="text-2xl font-bold mb-2">{section.title}</h3>
-                              <p className="text-gray-300 line-clamp-2 mb-4">{section.brief}</p>
+                        {/* Section card */}
+                        <motion.div
+                          className="bg-gray-900/80 backdrop-blur-md border border-purple-700/50 rounded-xl overflow-hidden cursor-pointer hover:border-purple-500 transition-all duration-300 shadow-lg shadow-purple-900/20 relative z-10 h-full"
+                          style={{ transform: `rotate(${tiltAngle})` }}
+                          whileHover={{ scale: 1.05, rotate: '0deg' }}
+                          onClick={() => openSection(section)}
+                        >
+                          <div className="relative h-full flex flex-col">
+                            <img
+                              src={section.coverImage}
+                              alt={section.title}
+                              className="w-full aspect-[4/3] object-cover"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex items-end">
+                              <div className="p-6">
+                                <h3 className="text-2xl font-bold mb-2">{section.title}</h3>
+                                <p className="text-gray-300 line-clamp-2 mb-4">{section.brief}</p>
 
-                              {/* CTA Button */}
-                              <motion.button
-                                className="flex items-center gap-2 bg-purple-700/70 hover:bg-purple-600 text-white px-4 py-2 rounded-full text-sm backdrop-blur-sm transition-colors"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                              >
-                                <MousePointerClick size={16} />
-                                Click Me
-                              </motion.button>
+                                {/* CTA Button */}
+                                <motion.button
+                                  className="flex items-center gap-2 bg-purple-700/70 hover:bg-purple-600 text-white px-4 py-2 rounded-full text-sm backdrop-blur-sm transition-colors"
+                                  whileHover={{ scale: 1.05 }}
+                                  whileTap={{ scale: 0.95 }}
+                                >
+                                  <MousePointerClick size={16} />
+                                  Click Me
+                                </motion.button>
+                              </div>
                             </div>
                           </div>
-                        </div>
+                        </motion.div>
                       </motion.div>
-                    </motion.div>
-                  );
-                })}
-              </div>
+                    );
+                  })}
+                </div>
 
-              {/* Vertical connecting line to next row */}
-              {rowIndex < reorganizedSections.length - 1 && !isMobile && (
-                <motion.div
-                  className={`absolute w-2 h-24 transform -translate-x-1/2 bg-gradient-to-b from-purple-500 via-blue-500 to-purple-500 -bottom-24 hidden md:block`}
-                  style={{
-                    left: rowIndex === 0 ? 'calc(83.33% - 1px)' : 'calc(16.67% - 1px)'
-                  }}
-                  initial={{ scaleY: 0, opacity: 0 }}
-                  whileInView={{ scaleY: 1, opacity: 1 }}
-                  viewport={{ once: true, margin: "-50px" }}
-                  transition={{ duration: 0.6, delay: 0.5 }}
-                ></motion.div>
-              )}
-            </div>
-          ))}
+                {/* Vertical connecting line to next row */}
+                {rowIndex < reorganizedSections.length - 1 && (
+                  <motion.div
+                    className="absolute w-2 h-24 transform -translate-x-1/2 bg-gradient-to-b from-purple-500 via-blue-500 to-purple-500 -bottom-24"
+                    style={{
+                      left: rowIndex === 0 ? 'calc(83.33% - 1px)' : 'calc(16.67% - 1px)'
+                    }}
+                    initial={{ scaleY: 0, opacity: 0 }}
+                    whileInView={{ scaleY: 1, opacity: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                  ></motion.div>
+                )}
+              </div>
+            ))}
+          </div>
 
           {/* Mobile layout (stacked vertically) */}
-          {isMobile && (
-            <div className="relative w-full">
-              {/* Main vertical timeline line */}
-              <motion.div
-                className="absolute left-4 top-0 bottom-0 w-2 bg-gradient-to-b from-purple-600 via-blue-600 to-purple-600 z-0"
-                initial={{ scaleY: 0, opacity: 0 }}
-                animate={{ scaleY: 1, opacity: 1 }}
-                transition={{ duration: 1.2 }}
-                style={{ transformOrigin: 'top' }}
-              ></motion.div>
+          <div className={`${isMobile ? 'block' : 'hidden'} relative w-full`}>
+            {/* Main vertical timeline line */}
+            <motion.div
+              className="absolute left-4 top-0 bottom-0 w-2 bg-gradient-to-b from-purple-600 via-blue-600 to-purple-600 z-0"
+              initial={{ scaleY: 0, opacity: 0 }}
+              animate={{ scaleY: 1, opacity: 1 }}
+              transition={{ duration: 1.2 }}
+              style={{ transformOrigin: 'top' }}
+            ></motion.div>
 
-              {mobileSections.map((section, index) => {
-                if (!section) return null;
+            {mobileSections.map((section, index) => {
+              if (!section) return null;
 
-                return (
+              return (
+                <motion.div
+                  key={section.id}
+                  className="relative mb-16 pl-12 pr-4 w-full"
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6 }}
+                >
+                  {/* Connecting horizontal line */}
                   <motion.div
-                    key={section.id}
-                    className="relative mb-16 pl-12 pr-4 w-full"
-                    initial={{ opacity: 0, x: 50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true, margin: "-50px" }}
-                    transition={{ duration: 0.6 }}
+                    className="absolute left-4 top-9 w-8 h-2 bg-gradient-to-r from-purple-600 to-transparent"
+                    initial={{ scaleX: 0, opacity: 0 }}
+                    whileInView={{ scaleX: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: 0.2 }}
+                    style={{ transformOrigin: 'left' }}
+                  ></motion.div>
+
+                  {/* Timeline dot */}
+                  <motion.div
+                    className="absolute left-3 top-8 w-8 h-8 rounded-full bg-purple-600 transform -translate-x-2 -translate-y-2 z-10"
+                    initial={{ scale: 0, opacity: 0 }}
+                    whileInView={{ scale: 1, opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{
+                      type: "spring",
+                      stiffness: 260,
+                      damping: 20,
+                      delay: 0.3
+                    }}
+                  ></motion.div>
+
+                  {/* Section card */}
+                  <motion.div
+                    className="bg-gray-900/80 backdrop-blur-md border border-purple-700/50 rounded-xl overflow-hidden cursor-pointer hover:border-purple-500 transition-all duration-300 shadow-lg shadow-purple-900/20 w-full"
+                    whileHover={{ scale: 1.03 }}
+                    onClick={() => openSection(section)}
                   >
-                    {/* Connecting horizontal line */}
-                    <motion.div
-                      className="absolute left-4 top-9 w-8 h-2 bg-gradient-to-r from-purple-600 to-transparent"
-                      initial={{ scaleX: 0, opacity: 0 }}
-                      whileInView={{ scaleX: 1, opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.4, delay: 0.2 }}
-                      style={{ transformOrigin: 'left' }}
-                    ></motion.div>
+                    <div className="relative">
+                      <img
+                        src={section.coverImage}
+                        alt={section.title}
+                        className="w-full aspect-[4/3] object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent flex items-end">
+                        <div className="p-4">
+                          <h3 className="text-xl font-bold mb-2">{section.title}</h3>
+                          <p className="text-gray-300 text-sm line-clamp-2 mb-3">{section.brief}</p>
 
-                    {/* Timeline dot */}
-                    <motion.div
-                      className="absolute left-3 top-8 w-8 h-8 rounded-full bg-purple-600 transform -translate-x-2 -translate-y-2 z-10"
-                      initial={{ scale: 0, opacity: 0 }}
-                      whileInView={{ scale: 1, opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{
-                        type: "spring",
-                        stiffness: 260,
-                        damping: 20,
-                        delay: 0.3
-                      }}
-                    ></motion.div>
-
-                    {/* Section card */}
-                    <motion.div
-                      className="bg-gray-900/80 backdrop-blur-md border border-purple-700/50 rounded-xl overflow-hidden cursor-pointer hover:border-purple-500 transition-all duration-300 shadow-lg shadow-purple-900/20 w-full"
-                      whileHover={{ scale: 1.03 }}
-                      onClick={() => openSection(section)}
-                    >
-                      <div className="relative">
-                        <img
-                          src={section.coverImage}
-                          alt={section.title}
-                          className="w-full aspect-[4/3] object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-transparent flex items-end">
-                          <div className="p-4">
-                            <h3 className="text-xl font-bold mb-2">{section.title}</h3>
-                            <p className="text-gray-300 text-sm line-clamp-2 mb-3">{section.brief}</p>
-
-                            {/* CTA Button */}
-                            <motion.button
-                              className="flex items-center gap-1 bg-purple-700/70 hover:bg-purple-600 text-white px-3 py-1 rounded-full text-xs backdrop-blur-sm transition-colors"
-                              whileHover={{ scale: 1.05 }}
-                              whileTap={{ scale: 0.95 }}
-                            >
-                              <MousePointerClick size={14} />
-                              Click Me
-                            </motion.button>
-                          </div>
+                          {/* CTA Button */}
+                          <motion.button
+                            className="flex items-center gap-1 bg-purple-700/70 hover:bg-purple-600 text-white px-3 py-1 rounded-full text-xs backdrop-blur-sm transition-colors"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <MousePointerClick size={14} />
+                            Click Me
+                          </motion.button>
                         </div>
                       </div>
-                    </motion.div>
+                    </div>
                   </motion.div>
-                );
-              })}
-            </div>
-          )}
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
 
         {/* Thank you message */}
