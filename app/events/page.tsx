@@ -8,7 +8,14 @@ import { ChevronLeft, ChevronRight, X, MousePointerClick } from 'lucide-react';
 import { recapSections } from './recap-data';
 
 export default function GradientWeekRecap() {
-  const [activeSection, setActiveSection] = useState(null);
+  const [activeSection, setActiveSection] = useState<{
+    id: string;
+    title: string;
+    brief: string;
+    description: string;
+    coverImage: string;
+    images: { url: string; alt: string; thumbnail?: string }[];
+  } | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -23,7 +30,14 @@ export default function GradientWeekRecap() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const openSection = (section) => {
+  const openSection = (section: {
+    id: string;
+    title: string;
+    brief: string;
+    description: string;
+    coverImage: string;
+    images: { url: string; alt: string; thumbnail?: string }[];
+  }) => {
     setActiveSection(section);
     setCurrentImageIndex(0);
   };
@@ -46,7 +60,7 @@ export default function GradientWeekRecap() {
     }
   };
 
-  const goToImage = (index) => {
+  const goToImage = (index: number) => {
     setCurrentImageIndex(index);
   };
   
