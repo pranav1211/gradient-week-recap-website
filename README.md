@@ -8,8 +8,7 @@ Visit our website: [GradientAIML.tech](https://GradientAIML.tech)
 
 ## About
 - **Designed and managed by:**
-  - [**Pranav Veeraghanta**](https://beyondmebtw.com), Tech Head  
-  - [**Vinay Yele**](https://vinayyele.live), Design Head  
+  - [**Pranav Veeraghanta**](https://beyondmebtw.com), Tech Head    
 
 Feel free to explore, use, or contribute to the code in this repository. Contributions are welcome!
 
