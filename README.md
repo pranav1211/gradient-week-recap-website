@@ -2,7 +2,9 @@
 
 This repository contains the source code and assets for Gradient Week '25 Recap Website
 
-Visit our website: [GradientAIML.tech](https://GradientAIML.tech/gw25recap)
+Visit this site : [GradientAIML.tech/gw25recap](https://GradientAIML.tech/gw25recap)
+
+Visit our website: [GradientAIML.tech](https://GradientAIML.tech)
 
 ## About
 - **Designed and managed by:**
